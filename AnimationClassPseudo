@@ -1,0 +1,48 @@
+/* This class will be in charge to animate all the images we will
+be using for the game. From environmental characters to the main 
+character in the game.
+*/
+
+Class Animation{
+
+
+Animation(String imagePrefix, int count){
+  /* Constructor of Animation class. It takes a prefix of 
+	an image (Name) and takes a count integer to determine the
+	number of images that will be used to create an animation
+
+	*/
+}
+
+void display(float xpos, float ypos){
+ /* Function display will take the position where the images will be 
+    showed. It also uses an integer to determine the name 
+    of the frame that needs to be diplayed.
+
+ */
+
+
+}
+
+void stopDisplay(float xpos, float ypos){
+  /* Takes x and y values where the image needs to be showed.
+     integer used for frame number is set to zero and initial
+     image is displayed.
+
+  */
+}
+
+void getWidth(){{
+  /* Returns the with value of the images.
+  */
+
+}
+
+
+
+
+
+
+
+
+}
