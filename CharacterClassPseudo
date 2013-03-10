@@ -1,0 +1,21 @@
+Character class {
+Declare variable for X position;
+Declare variable for Y position;
+  Character (var X, var Y) {
+		Set X position to X
+		Set Y position to Y
+}
+Get X {
+	Return X position
+}
+
+Get Y {
+	Return Y position
+}
+	Set X ( var X) {
+		Set the X position to X
+	}
+	Set X ( var Y) {
+		Set the Y position to Y
+	}
+}
