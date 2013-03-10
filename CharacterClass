@@ -1,0 +1,26 @@
+class Character{
+  int xPos;
+  int yPos; 
+  
+  Character(int x, int y){
+    setxPos(x);  
+    setyPos(y);
+  }
+  
+  void setxPos(int x){
+    this.xPos = x; 
+  }
+  
+  void setyPos(int y){
+    this.yPos = y;
+  }
+  
+  int getxPos(){
+    return this.xPos;
+  }
+  
+  int getyPos(){
+   return this.yPos; 
+  }
+  
+}
