@@ -1,0 +1,192 @@
+import java.util.Iterator;
+import android.view.MotionEvent;
+
+// The main detector object
+TouchProcessor touch;
+
+// box position
+//width, height, size
+float[] box1 = {150,0,100};
+
+boolean[] ladder ={false};
+
+//-------------------------------------------------------------------------------------
+void setup() { 
+  size(displayWidth,displayHeight);
+  strokeWeight(2);
+  touch = new TouchProcessor();
+}
+
+//-------------------------------------------------------------------------------------
+void draw() {
+  background(0);
+  touch.analyse();
+  touch.sendEvents();
+ 
+  textSize(20);  
+  ArrayList touchPoints = touch.getPoints();
+  moveCharacter(touchPoints);
+  
+  //drawing floors
+  fill(255,255,255);
+  rect(0  ,0  ,displayWidth/5  ,displayHeight);
+  rect(2*displayWidth/5  ,0,  displayWidth/5,  displayHeight);
+  rect(4*displayWidth/5  ,0,  displayWidth/5,  displayHeight);
+
+//drawing ladders
+  fill(0,255,0);
+  rect(displayWidth/5,2*displayHeight/10,displayWidth/5 ,20);
+  rect(2*displayWidth/5,9*displayHeight/10,displayWidth/5 ,20);
+  rect(3*displayWidth/5,5*displayHeight/10,displayWidth/5 ,20);
+
+  //checking collsion with ladder
+  if(box1[1]<2*displayHeight/10 && (box1[1]+displayWidth/5) >(2*displayHeight/10+20) )
+  {
+    ladder[0] = true;
+  }
+  else
+  {
+   ladder[0] = false;
+  }
+  
+  
+
+  // draw a box that can be translated, scaled and rotated using gestures
+  stroke(255);
+  fill(0,0,255);
+  rect(box1[0], box1[1], box1[2],box1[2]);
+} 
+
+//-------------------------------------------------------------------------------------
+// MULTI TOUCH EVENTS!
+
+void onTap( TapEvent event ) {
+  if ( event.isSingleTap() ) {
+  }  
+  if ( event.isDoubleTap() ) {
+  }
+}
+
+//-------------------------------------------------------------------------------------
+// This is the stock Android touch event 
+boolean surfaceTouchEvent(MotionEvent event) {
+  
+  // extract the action code & the pointer ID
+  int action = event.getAction();
+  int code   = action & MotionEvent.ACTION_MASK;
+  int index  = action >> MotionEvent.ACTION_POINTER_ID_SHIFT;
+
+  float x = event.getX(index);
+  float y = event.getY(index);
+  int id  = event.getPointerId(index);
+
+  // pass the events to the TouchProcessor
+  if ( code == MotionEvent.ACTION_DOWN || code == MotionEvent.ACTION_POINTER_DOWN) {
+    touch.pointDown(x, y, id);
+  }
+  else if (code == MotionEvent.ACTION_UP || code == MotionEvent.ACTION_POINTER_UP) {
+    touch.pointUp(event.getPointerId(index));
+  }
+  else if ( code == MotionEvent.ACTION_MOVE) {
+    int numPointers = event.getPointerCount();
+    for (int i=0; i < numPointers; i++) {
+      id = event.getPointerId(i);
+      x = event.getX(i);
+      y = event.getY(i);
+      touch.pointMoved(x, y, id);
+    }
+  } 
+
+  return super.surfaceTouchEvent(event);
+}
+
+//-------------------------------------------------------------------------------------
+void moveCharacter(ArrayList touchPoints) {
+  Iterator i = touchPoints.iterator();
+  while (i.hasNext ()) {
+    TouchPoint p = (TouchPoint)i.next();
+    //move the character (box for now)
+    
+    if(ladder[0])
+    {
+      //if it hits the ladder
+      if(box1[0]<=displayWidth/5)
+      {
+        //if it is at the ladder floor
+         if(box1[1]>p.y)
+        {
+          //move right
+          box1[1]= box1[1] - 10;
+        }
+        else
+        {
+          //move left
+         box1[1]= box1[1] + 10;
+        } 
+        
+         if(box1[0]<p.x)
+        {
+          //go up
+          box1[0]= box1[0] + 2;
+        }
+        
+       }
+       else if(box1[0]>=displayWidth/5+displayWidth/5)
+       {
+         //if box is greater then ladder, aka on next level
+         if(box1[1]>p.y)
+        {
+          //move right
+          box1[1]= box1[1] - 10;
+        }
+        else
+        {
+          //move left
+         box1[1]= box1[1] + 10;
+        } 
+        
+         if(box1[0]>p.x)
+        {
+          //go down
+          box1[0]= box1[0] - 2;
+        }
+       }
+       else
+       {
+         //in between levels, and on ladder
+         if(box1[0]>p.x)
+        {
+          //go down
+          box1[0]= box1[0] - 2;
+        }
+        else
+        {
+          //go up
+         box1[0]= box1[0] + 2;
+        } 
+       }
+       
+    }
+    else
+    {
+      //not on any ladder move normal
+       if(box1[1]>p.y)
+      {
+        box1[1]= box1[1] - 10;
+      }
+      else
+      {
+       box1[1]= box1[1] + 10;
+      }
+    }
+    
+   
+    
+  }
+  // show the centroid of the gesture
+  if (touchPoints.size() > 1 ) {
+    stroke(255);
+    fill(255, 0, 0);
+    ellipse(touch.cx, touch.cy, 15, 15);
+  }
+}
