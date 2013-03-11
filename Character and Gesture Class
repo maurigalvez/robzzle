@@ -1,0 +1,90 @@
+Character Movement Class
+moveCharacter
+{
+  if(position y of character is less then figure position y)
+	{
+	going right
+ get the character position and subtrack to it (y pos)
+	}
+	else
+	{
+	going left
+ get the character position and add to it (y pos)
+
+	}
+}
+
+
+
+Gesture Class
+
+Tap
+{
+int counter to keep track of how many taps
+long  TAP_TIMEOUT reset taps every r seconds
+
+
+
+if(user taps on screen)
+{
+	start tap timeout
+	if tap is timeout   break
+	if count ==1 then single tap
+	if count >= 2 then double tap
+}
+
+if rotate
+{
+get distance of both figures and save it as the old position
+get angle by comparing the old position of figures to new ones
+rotate object by the angle
+
+}
+
+if pinch
+{
+get the distance between both fingers 
+set the pinch to that distance 
+scale object from the distance given
+}
+
+
+
+Touch Point Class
+float x postion
+float y position
+float px, old x
+float py, old y
+ float angle , current angle
+  float oldAngle , old angle
+  float pinch  , current pinch
+  float oldPinch, old pinch
+
+TouchPoint(float x, float y, int id) 
+{
+set all points
+}
+ 
+void update(float x, float y) 
+{
+update points 
+px = x
+py = y
+we keep the old points to make comparisons 
+x=x
+y=y
+}
+
+  void setAngle(float angle) 
+{
+updating the angle
+oldAngle = angle
+angle = angle
+}
+  void setPinch(float pinch) 
+{
+updating the pinch
+oldPinch = pinch
+pinch = pinch
+
+}
